@@ -17,7 +17,7 @@ def conv2d(a, f):
     subM = strd(a, shape = s, strides = a.strides * 2)
     ##To jest convolution macierzy subM z macierzą f.
     # W naszym przypadku to aplikuje operator Sobela do kazdego pixela razem z ośmioma pixelami 
-    #przylegającymi dla f=sobelx, a=a. Potem zwraca macierz 
+    #przylegającymi dla a=a, f=sobelx.
     return np.einsum('ij,ijkl->kl', f, subM)
 #wykrywanie krawedzi metodą operatorów Sobela
 #Dzialamy na kazdy pixel operatorem Sobela, bierzemy pierwiastek z kwadratów skladowych
@@ -33,11 +33,11 @@ def katy(img):
     krawedz = krawedzie(img)
     pionowe = conv2d(img, sobely)
     poziome = conv2d(img, sobelx)
-    
+    #macierze pixeli, które należą do krawędzi.
     listapionowe = pionowe[krawedz !=0]
     listapoziome = poziome[krawedz !=0]
-    #Gdy gradient w kierunku x nie jest równy zero, mozemy podzielic i policzyc kat
-    #z arctan
+    #Gdy gradient w kierunku x nie jest równy zero, mozemy podzielic Gy/Gx
+    #kąt z arctan
     poziomeniezero = listapoziome[listapoziome != 0]
     pionoweniezero = listapionowe[listapoziome !=0]
     rozklad1 = np.arctan(np.divide(pionoweniezero, poziomeniezero))
@@ -48,12 +48,8 @@ def katy(img):
     rozklad = np.concatenate((rozklad1,znakipionowe), axis=None)
     return rozklad
     
-
-        
-
-
-    
-    #próg tolerancji. 70 działa całkiem dobrze.
+    #threshold-próg tolerancji. 70 działa całkiem dobrze.
+    #sobel-operatory sobela
 threshold = 70
 sobely = np.array(([1,2,1],[0,0,0],[-1,-2,-1]) )
 sobelx = np.swapaxes(sobely,0,1)
@@ -69,7 +65,6 @@ image = image.convert('L')
 image = np.array(image)
 
 #operatory Sobela wykrywający krawędzie
-gaussianblur = np.array(([1/16,1/8,1/16],[1/8,1/4,1/8],[1/16,1/8,1/16]))
 zdjecie = krawedzie(image)
 output = Image.fromarray(np.uint8(zdjecie)).convert('L')
 output.show()
@@ -84,6 +79,6 @@ przedzial = np.linspace(-np.pi,np.pi,50)
 przedzial = (180/(np.pi))*przedzial
 
 plt.hist(rozkladkatow, przedzial)
-plt.xlabel('Radiany')
+plt.xlabel('Stopnie')
 plt.ylabel('Gęstość występowania')
 plt.show()
