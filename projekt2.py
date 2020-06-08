@@ -6,6 +6,9 @@ import sys
 
 #Przyznaję, że nie napisałem sam kawałka poniżej, tylko go znalazłem na StackExchange.
 #Ale jest bardzo zwięzły, więc postanowiłem go zostawić
+#Ogółem funckja con2d wyszukuje wszystkie spojne podmacierze a wymiaru f i 
+#i mnozy je z f po elementach. Jest to dokladnie to czego było potrzeba do 
+#do analizy obrazu.
 def conv2d(a, f):
     #to tworzy 4-wymiarową n-tkę. Dwie pierwsze liczby to wymiary f, dwie kolejne to 
     #liczba podmacierzy wymiaru f.shape w macierzy a. Np jak a to macierz 5x5, a f 3x3, to dostajemy
@@ -77,7 +80,7 @@ rozkladkatow = katy(image)
 rozkladkatow = (180/(np.pi))*rozkladkatow
 przedzial = np.linspace(-np.pi,np.pi,50)
 przedzial = (180/(np.pi))*przedzial
-
+#histogram nachylenia
 plt.hist(rozkladkatow, przedzial)
 plt.xlabel('Stopnie')
 plt.ylabel('Gęstość występowania')
