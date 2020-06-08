@@ -60,10 +60,12 @@ try:
     nazwa = sys.argv[1]
 except IndexError:
     nazwa = input('Podaj nazwe pliku \n')
+    
+try:
+    image = Image.open(nazwa)    
 except FileNotFoundError:
-    nazwa = input('Brak takiego pliku. Spróbuj ponownie. \n')
-        
-image = Image.open(nazwa)    
+    nazwa = input('Brak takiego pliku. Spróbuj ponownie \n')
+    image = Image.open(nazwa)    
 image = image.convert('L')
 image = np.array(image)
 
